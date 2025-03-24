@@ -29,9 +29,8 @@ const print = async (firstImpression, firstName, name, previsionDate, sign, horo
             printer.newLine();
             printer.newLine();
             printer.newLine();
-
-            let description, highlights, price;
             
+
             printer.alignCenter();
             printer.setTextDoubleHeight();
             printer.println(`Horoscopo para`);
@@ -43,10 +42,24 @@ const print = async (firstImpression, firstName, name, previsionDate, sign, horo
             printer.newLine();
             printer.newLine();
 
+
             printer.alignLeft();
             printer.setTextNormal();
             printer.println(horoscope.message);
             printer.newLine();
+
+
+            printer.alignCenter();
+            printer.bold(true);
+            printer.println('FRASE DO DIA');
+            printer.setTextQuadArea();
+            printer.println(horoscope.phrase_of_day);
+
+            printer.setTextNormal();
+            printer.bold(false);
+            printer.newLine();
+
+
             printer.alignCenter();
             printer.bold(true);
             printer.println('NÚMEROS DA SORTE');
@@ -57,15 +70,8 @@ const print = async (firstImpression, firstName, name, previsionDate, sign, horo
             printer.bold(false);
             printer.newLine();
 
-            printer.bold(true);
-            printer.println('FRASE DO DIA');
-            printer.setTextQuadArea();
-            printer.println(horoscope.phrase_of_day);
 
-            printer.setTextNormal();
-            printer.bold(false);
-            printer.newLine();
-
+            printer.alignCenter();
             printer.bold(true);
             printer.println('COR DA SORTE');
             printer.setTextQuadArea();
@@ -91,7 +97,8 @@ const print = async (firstImpression, firstName, name, previsionDate, sign, horo
                                          // 3 - Micro QR
             });
             printer.println('Conheça como fui desenvolvida\nlendo este QR Code!')
-
+            printer.newLine();
+            printer.newLine();
             printer.cut();
 
 
