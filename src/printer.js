@@ -23,30 +23,6 @@ const print = async (firstImpression, firstName, name, previsionDate, sign, horo
         try {
 
 
-            if (userData && firstImpression) {
-                printer.alignCenter();
-                printer.printQR(userData, { // https://wa.me/551150393737?text=Teste
-                    cellSize: 6,             // 1 - 8
-                    correction: 'M',         // L(7%), M(15%), Q(25%), H(30%)
-                    model: 3                 // 1 - Model 1
-                                             // 2 - Model 2 (standard)
-                                             // 3 - Micro QR
-                });
-    
-                printer.alignLeft();
-                printer.setTextNormal();
-                printer.newLine();
-                printer.bold(true);
-                printer.println(name.toUpperCase());
-                printer.bold(false);
-                printer.println(sign);
-                printer.newLine();
-                printer.newLine();
-                printer.newLine();
-                printer.cut();
-    
-            }
-
             printer.alignCenter();
             await printer.printImage('./assets/twilio-logo.png');
 
@@ -154,6 +130,35 @@ const print = async (firstImpression, firstName, name, previsionDate, sign, horo
                 // }
 
             printer.cut();
+
+
+
+
+
+            if (userData && firstImpression) {
+                printer.alignCenter();
+                printer.printQR(userData, { // https://wa.me/551150393737?text=Teste
+                    cellSize: 6,             // 1 - 8
+                    correction: 'M',         // L(7%), M(15%), Q(25%), H(30%)
+                    model: 3                 // 1 - Model 1
+                                             // 2 - Model 2 (standard)
+                                             // 3 - Micro QR
+                });
+    
+                printer.alignLeft();
+                printer.setTextNormal();
+                printer.newLine();
+                printer.bold(true);
+                printer.println(name.toUpperCase());
+                printer.bold(false);
+                printer.println(sign);
+                printer.newLine();
+                printer.newLine();
+                printer.newLine();
+                printer.cut();
+    
+            }
+
             printer.execute(err => {
                 if (err) throw err;
             });
