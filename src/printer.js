@@ -49,7 +49,7 @@ const print = async (firstImpression, firstName, name, previsionDate, sign, horo
             printer.newLine();
             printer.alignCenter();
             printer.bold(true);
-            printer.println('MEGA-SENA');
+            printer.println('NÚMEROS DA SORTE');
             printer.setTextQuadArea()
             printer.println(horoscope.lottery);
 
