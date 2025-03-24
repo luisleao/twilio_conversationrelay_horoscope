@@ -92,46 +92,7 @@ const print = async (firstImpression, firstName, name, previsionDate, sign, horo
             });
             printer.println('Conheça como fui desenvolvida\nlendo este QR Code!')
 
-
-                // printer.alignCenter();
-                // printer.setTextQuadArea();
-                // printer.setTypeFontB();
-                // printer.println(activity_name);
-
-                // printer.setTypeFontA();
-                // printer.newLine();
-                // printer.setTextNormal();
-                // printer.println(activity_location);
-
-                // printer.newLine();
-                // printer.alignLeft();
-                // printer.setTextNormal();
-
-                // printer.println(description);
-                // printer.newLine();
-
-                // printer.setTextDoubleWidth();
-                // printer.print('Outdoor/Indoor: ');
-                // printer.println(spaceType);
-
-                // printer.newLine();
-                // printer.print('Price: ');
-                // printer.println(price);
-                // printer.setTextDoubleWidth();
-                // printer.newLine();
-
-                // if (highlights && highlights.length > 0) {
-                //     printer.println('Some highlights:');
-                //     printer.setTextNormal();
-                //     highlights.map( h => printer.println(`* ${h.trim()}`));
-                //     // printer.println(highlights.map( h => `* ${h.split('\n').join('')}`).join('\n'));
-                //     printer.newLine();
-                //     printer.newLine();
-                // }
-
             printer.cut();
-
-
 
 
 
