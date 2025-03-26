@@ -8,7 +8,7 @@ const { NGROK_ACTIVE, NGROK_TOKEN, NGROK_SUBDOMAIN } = process.env;
 
 const { decodeBase64ToJson, getFirstName } = require('./util/converter');
 const { makeCall } = require('./call');
-const { print } = require('./printer');
+const { print, printCredential } = require('./printer');
 
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
@@ -57,6 +57,9 @@ console.log('starting...');
         const userDataJson = decodeBase64ToJson(userData);
         console.log('userDataJson', userDataJson);
         if (userDataJson && userDataJson.memberNome) {
+
+            await printCredential(userDataJson.memberNome, userData);
+
             // TODO: make a Twilio call using ConversationRelay and the greeting including the first name
 
             // const welcomeGreeting = `Olá ${getFirstName(userDataJson.memberNome)}, soy Luzia del Destino! Me cuente cuando nasceu que voy te ajudar a descobrir su futuro.`
@@ -177,7 +180,9 @@ wss.on('connection', (ws) => {
         Ao responder a previsão por voz seja simples e forneça apenas a mensagem de previsão e nada mais. As demais informações e o formato mais completo da previsão só devem ser enviadas na função de impressão.
         Você pode responder qualquer pergunta que seja relacionada a horóscopo, astrologia ou previsões do futuro e nada mais. Se você não souber a resposta, você pode dizer que não sabe ou que não pode responder.
         Quando fizer sua previsão, você pode oferecer para imprimir o horóscopo da pessoa.
-        Se ela aceitar, você deve dizer que vai imprimir o horóscopo, chamar a função 'printHoroscope'. O parâmetro 'horoscope.message' deve ser completo, com pelo menos 200 caracteres e deve quebrar de linha a cada 45 caracteres, mesmo que a frase seja mais longa que isso. O parâmetro horoscope.phrase_of_day deve quebrar de linha a cada 22 caracteres, mesmo que a frase seja mais longa que isso.
+        Se ela aceitar, você deve dizer que vai imprimir o horóscopo, chamar a função 'printHoroscope'. O parâmetro 'horoscope.message' deve ser completo, com pelo menos 200 caracteres. O parâmetro horoscope.phrase_of_day deve quebrar de linha a cada 22 caracteres, mesmo que a frase seja mais longa que isso.
+
+        JAMAIS repita os parâmetros da função dentro do texto da previsão.
 
         A pessoa deve dizer o primeiro nome. Se ela não disser, você pode perguntar. Quando ela responder, não fale novamente sobre você e seja direta sobre o horóscopo e algum dado que precise.
         Seja sempre gentil e educada. Quando confirmar a impressão, pergunte se a pessoa deseja mais alguma coisa.
@@ -256,6 +261,8 @@ wss.on('connection', (ws) => {
                 break;
 
             case 'prompt':
+
+            try {
                 console.log('Prompt:', message.voicePrompt);
                 const result = await chat.sendMessage(message.voicePrompt);
 
@@ -295,6 +302,18 @@ wss.on('connection', (ws) => {
                     console.log('> ', result.response.text());
 
                 }
+            } catch (error) {
+
+                console.error(error);
+                
+                ws.send(JSON.stringify({ 
+                    type: 'text',
+                    token: 'Parece que ocorreu um erro. Você pode repetir por favor?',
+                    last: true
+                }));
+
+            }
+
 
                 break;
 
@@ -371,12 +390,11 @@ server.listen(PORT, async () => {
 
     SERVER = `https://demoleao.sa.ngrok.io`;
 
-    if (NGROK_ACTIVE) {
-
-        SERVER = await ngrok.connect({ authtoken: NGROK_TOKEN, addr: PORT, subdomain: NGROK_SUBDOMAIN });
-        
-        console.log('URL:', SERVER);
-    }
+    // if (NGROK_ACTIVE) {
+    //     console.log('Starting NGROK...');
+    //     SERVER = await ngrok.connect({ authtoken: NGROK_TOKEN, addr: PORT, subdomain: NGROK_SUBDOMAIN });
+    //     console.log('URL:', SERVER);
+    // }
 });
 
 
@@ -393,3 +411,39 @@ process.on('SIGINT', finish);
 
 // detect server close
 process.on('SIGTERM', finish);
+
+
+
+
+
+
+
+const limitLine = (text, maxLineLength) => {
+    let lines = [];
+    let words = text.split(' ');
+    let line = '';
+
+    words.forEach(word => {
+        if (line.length + word.length + (line ? 1 : 0) > maxLineLength) {
+            lines.push(line.trim());
+            line = '';
+        }
+        line += (line ? ' ' : '') + word;
+    });
+
+    if (line) lines.push(line); // Adiciona a última linha
+    return lines.join('\n');
+};
+
+console.log();
+console.log();
+console.log();
+console.log();
+console.log();
+console.log(limitLine('Acredite no seu potencial e conquiste seus objetivos.', 25));
+console.log();
+console.log();
+console.log();
+console.log();
+console.log();
+console.log();
